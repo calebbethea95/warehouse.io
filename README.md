@@ -1,4 +1,4 @@
-# Inventory Serivce
+# Warehouse.io
 
 An agnostic API that serves data from a schema defined by anothe r
 service. This MVP will aim to serve data from a default "warehouse." It will be in NestJS.
