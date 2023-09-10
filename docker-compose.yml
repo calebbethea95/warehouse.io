@@ -1,0 +1,22 @@
+version: "1.0"
+services:
+   userDB:
+      image: postgres:14.5
+      hostname: userDB
+      container_name: userDB
+      environment:
+         POSTGRES_PASSWORD: postgres
+         POSTGRES_USER: postgres
+         POSTGRES_DB: userDB
+      ports:
+        - "5432:5432"
+   inventoryDB:
+      image: postgres:14.5
+      hostname: inventoryDB
+      container_name: inventoryDB
+      environment:
+         POSTGRES_PASSWORD: postgres
+         POSTGRES_USER: postgres
+         POSTGRES_DB: inventoryDB
+      ports:
+        - "5433:5432"
