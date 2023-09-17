@@ -80,6 +80,7 @@ app.post('/login', async (req, res) => {
 
 });
 
+
 sequelize.sync().then(()=>{
 
     app.listen(port, () =>{
