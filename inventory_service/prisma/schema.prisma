@@ -7,5 +7,83 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("INVENTORY_DATABASE_URL")
+}
+
+model Warehouse{
+  warehouseID Int @id @unique @default(autoincrement())
+  users  User[]
+}
+
+enum Role{
+  SUPERADMIN
+  USER
+}
+
+model User{
+  userID Int @id @unique
+  role  Role
+  warehouse Warehouse?@relation(fields:[warehouseID], references: [warehouseID])
+  warehouseID Int
+}
+model Vendor{
+  vendorID  Int @id
+}
+
+enum Status{
+  VERIFIED
+  CREATED
+}
+model Shipment{
+  shipmentID Int @id
+  status Status @default(CREATED)
+}
+
+model PurchaseOrderLine{
+  lineId Int @id
+  item Item @relation(fields:[itemID], references:[itemID])
+  itemID Int
+  quantity Int
+  purchaseOrder PurchaseOrder @relation(fields:[PurchaseOrderID], references: [POID])
+  PurchaseOrderID Int
+}
+
+model PurchaseOrder{
+  POID Int @id
+  status Status @default(CREATED)
+  createdAt DateTime @default(now())
+  createdBy String
+  lines PurchaseOrderLine[]
+}
+
+model Item{
+  itemID Int @id
+  purchaseOrders PurchaseOrderLine[]
+  pallets Pallet[]
+  locations Location[]
+  transferOrder TransferOrder[]
+}
+
+model Pallet{
+  palletID Int @id @default(autoincrement())
+  contents Item[]
+}
+
+model Location{
+  locationID Int @id
+  locationBarcode String
+  contents Item? @relation(fields:[itemID], references: [itemID])
+  itemID Int
+  quantity Int
+  transferOrdersFrom TransferOrder[] @relation("FromLocationRelation")
+  transferOrderTo TransferOrder[] @relation("ToLocationRelation")
+}
+
+model TransferOrder{
+  transferOrderID Int @id
+  contents Item[]
+  fromLocation Location @relation("FromLocationRelation", fields:[fromLocationID], references: [locationID])
+  fromLocationID Int
+  toLocation Location @relation("ToLocationRelation", fields: [toLocationID], references: [locationID])
+  toLocationID Int
 }

@@ -8,16 +8,6 @@ const app = express();
 app.use(express.json());
 const port = 8080;
 
-
-//TODO
-// connect to database
-// POST REGISTER
-//  {
-//   "username": string,
-//   "password": string
-//  }
-// POST LOGIN
-
 const test = async () => {
     try{
         await sequelize.authenticate();
